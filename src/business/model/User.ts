@@ -43,5 +43,5 @@ export interface SignupInputDTO {
 
 export enum UserRole {
     NORMAL = 'NORMAL',
-    ADMIN = 'ADIMN'
+    ADMIN = 'ADMIN'
 }

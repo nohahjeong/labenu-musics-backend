@@ -13,25 +13,19 @@ export class UserBusiness {
     ) { }
 
     async createUser(user: SignupInputDTO) {
-        console.log("------------Business------------")
-        console.log(user.email)
         if (!user.name || !user.email || !user.password) {
-            console.log('1?')
             throw new Error('Missing input')
         }
 
         if (user.email.indexOf("@") === -1) {
-            console.log('2?')
            throw new Error('Address must have an @')
         }
   
         if (user.password.length < 6) {
-            console.log('3?')
            throw new Error('Password must have at least 6 characters')
         }
   
         if (user.role !== UserRole.ADMIN && user.role !== UserRole.NORMAL) {
-            console.log('4?')
            throw new Error('User role must be "NORMAL" or "ADMIN"')
         }
 
@@ -50,7 +44,6 @@ export class UserBusiness {
             id: userId,
             role: user.role
         })
-        console.log(acessToken)
 
         return acessToken
     }

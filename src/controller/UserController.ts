@@ -15,9 +15,7 @@ const userBusiness = new UserBusiness(
 
 export class UserController {
     async signup(req: Request, res: Response) {
-        console.log("------------Controller------------")
         try {
-            console.log("------------TRY------------")
             const input: SignupInputDTO = {
                 name: req.body.name,
                 email: req.body.email,
@@ -30,9 +28,7 @@ export class UserController {
 
             res.status(200).send({ token })
         } catch (error) {
-            console.log("------------CATCH------------")
-            console.log({error: error.message})
-            res.status(400).send({ error: error.messsage })
+            res.status(400).send({ error: error.message })
         }
     }
 }

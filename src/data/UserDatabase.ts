@@ -5,7 +5,6 @@ export class UserDatabase extends Database {
     private static tableName = "LABENUMUSICS_USERS"
 
     public async createUser(user: User): Promise<void> {
-        console.log("------------database------------")
         try {
             await this.getConnection().raw(`
                 INSERT INTO ${UserDatabase.tableName} (id, name, email, nickname, password, role)
