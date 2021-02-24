@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { SignupInputDTO } from '../business/model/User'
+import { LoginInputDTO, SignupInputDTO } from '../business/model/User'
 import { UserBusiness } from '../business/UserBusiness'
 import { UserDatabase } from '../data/UserDatabase'
 import { IdGenerator } from '../business/services/IdGenerator'
@@ -25,6 +25,21 @@ export class UserController {
             }
 
             const token = await userBusiness.createUser(input)
+
+            res.status(200).send({ token })
+        } catch (error) {
+            res.status(400).send({ error: error.message })
+        }
+    }
+
+    async login(req: Request, res: Response) {
+        try {
+            const input: LoginInputDTO = {
+                email: req.body.email,
+                password: req.body.password
+            }
+
+            const token = await userBusiness.authUserByEmail(input)
 
             res.status(200).send({ token })
         } catch (error) {

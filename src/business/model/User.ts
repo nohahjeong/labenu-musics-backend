@@ -33,6 +33,11 @@ export class User {
     }
 }
 
+export enum UserRole {
+    NORMAL = 'NORMAL',
+    ADMIN = 'ADMIN'
+}
+
 export interface SignupInputDTO {
     name: string,
     email: string,
@@ -41,7 +46,7 @@ export interface SignupInputDTO {
     role?: string
 }
 
-export enum UserRole {
-    NORMAL = 'NORMAL',
-    ADMIN = 'ADMIN'
+export interface LoginInputDTO {
+    email: string,
+    password: string
 }

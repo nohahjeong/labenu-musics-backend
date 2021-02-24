@@ -2,7 +2,7 @@ import { UserDatabase } from '../data/UserDatabase'
 import { IdGenerator } from './services/IdGenerator'
 import { HashManager } from './services/HashManager'
 import { Authenticator } from './services/Authenticator'
-import { SignupInputDTO, User, UserRole } from './model/User'
+import { LoginInputDTO, SignupInputDTO, User, UserRole } from './model/User'
 
 export class UserBusiness {
     constructor(
@@ -43,6 +43,30 @@ export class UserBusiness {
         const acessToken = this.authenticator.generateToken({
             id: userId,
             role: user.role
+        })
+
+        return acessToken
+    }
+
+    async authUserByEmail(user: LoginInputDTO) {
+        if (!user.email || !user.password) {
+            throw new Error('Missing "email" and/or "password"')
+        }
+
+        const userFromDB = await this.userDatabase.getUserByEmail(user.email)
+        console.log(userFromDB)
+        if (!userFromDB) {
+            throw new Error('Email not registered')
+        }
+        const isPasswordCorrect = await this.hashManager.compareHash(user.password, userFromDB.password)
+
+        if (!isPasswordCorrect) {
+            throw new Error('Wrong password')
+        }
+
+        const acessToken = this.authenticator.generateToken({
+            id: userFromDB.id,
+            role: userFromDB.role
         })
 
         return acessToken
