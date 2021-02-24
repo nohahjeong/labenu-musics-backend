@@ -4,10 +4,6 @@ import Knex from 'knex'
 export abstract class Database {
     private static connection: Knex | null = null
 
-    protected tableNames = {
-        // tabela: "NOME_TABELA"
-    }
-
     protected getConnection(): Knex {
         if (!Database.connection) {
             Database.connection = knex({
