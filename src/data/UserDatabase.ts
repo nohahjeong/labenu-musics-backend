@@ -27,4 +27,17 @@ export class UserDatabase extends Database {
             throw new Error(error.sqlMessage)
         }
     }
+
+    public async getUserByNickname(nickname: string): Promise<User> {
+        try {
+            const result = await this.getConnection().raw(`
+                SELECT * FROM ${UserDatabase.tableName}
+                WHERE nickname = '${nickname}'
+            `)
+
+            return result[0][0]
+        } catch (error) {
+            throw new Error(error.sqlMessage)
+        }
+    }
 }

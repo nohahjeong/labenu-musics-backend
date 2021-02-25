@@ -47,6 +47,6 @@ export interface SignupInputDTO {
 }
 
 export interface LoginInputDTO {
-    email: string,
+    emailOrNickname: string,
     password: string
 }

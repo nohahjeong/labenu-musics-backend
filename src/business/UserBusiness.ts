@@ -20,15 +20,15 @@ export class UserBusiness {
         }
 
         if (user.email.indexOf("@") === -1) {
-           throw new ExpectationFailedError('Address must have an @')
+            throw new ExpectationFailedError('Address must have an @')
         }
-  
+
         if (user.password.length < 6) {
-           throw new ExpectationFailedError('Password must have at least 6 characters')
+            throw new ExpectationFailedError('Password must have at least 6 characters')
         }
-  
+
         if (user.role !== UserRole.ADMIN && user.role !== UserRole.NORMAL) {
-           throw new ExpectationFailedError('User role must be "NORMAL" or "ADMIN"')
+            throw new ExpectationFailedError('User role must be "NORMAL" or "ADMIN"')
         }
 
         const userId = this.idGenerator.generateId()
@@ -50,16 +50,23 @@ export class UserBusiness {
         return acessToken
     }
 
-    async authUserByEmail(user: LoginInputDTO) {
-        if (!user.email || !user.password) {
-            throw new ExpectationFailedError('Missing "email" and/or "password"')
+    async authUserByEmailOrNickname(user: LoginInputDTO) {
+        if (!user.emailOrNickname || !user.password) {
+            throw new ExpectationFailedError('Please fill in with your email or nickname and your password')
         }
 
-        const userFromDB = await this.userDatabase.getUserByEmail(user.email)
-        console.log(userFromDB)
-        if (!userFromDB) {
-            throw new NotFoundError('Email not registered')
+        let userFromDB = undefined
+
+        if (user.emailOrNickname.indexOf("@") === -1) {
+            userFromDB = await this.userDatabase.getUserByNickname(user.emailOrNickname)
+        } else {
+            userFromDB = await this.userDatabase.getUserByEmail(user.emailOrNickname)
         }
+
+        if (!userFromDB) {
+            throw new NotFoundError('Email or nickname not registered')
+        }
+
         const isPasswordCorrect = await this.hashManager.compareHash(user.password, userFromDB.password)
 
         if (!isPasswordCorrect) {

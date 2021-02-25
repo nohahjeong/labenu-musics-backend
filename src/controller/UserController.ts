@@ -35,11 +35,11 @@ export class UserController {
     async login(req: Request, res: Response) {
         try {
             const input: LoginInputDTO = {
-                email: req.body.email,
+                emailOrNickname: req.body.emailOrNickname,
                 password: req.body.password
             }
 
-            const token = await userBusiness.authUserByEmail(input)
+            const token = await userBusiness.authUserByEmailOrNickname(input)
 
             res.status(200).send({ token })
         } catch (error) {
