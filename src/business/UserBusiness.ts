@@ -16,11 +16,11 @@ export class UserBusiness {
 
     async createUser(user: SignupInputDTO) {
         if (!user.name || !user.email || !user.password || !user.nickname) {
-            throw new ExpectationFailedError('Missing input')
+            throw new ExpectationFailedError('Please fill in all the fields')
         }
 
         if (user.email.indexOf("@") === -1) {
-            throw new ExpectationFailedError('Address must have an @')
+            throw new ExpectationFailedError('Address must have an "@"')
         }
 
         if (user.password.length < 6) {
