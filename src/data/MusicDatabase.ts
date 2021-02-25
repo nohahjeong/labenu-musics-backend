@@ -12,6 +12,8 @@ export class MusicDatabase extends Database {
             `)
         } catch (error) {
             throw new Error(error.sqlMessage)
+        } finally {
+            await Database.destroyConnection()
         }
     }
 }

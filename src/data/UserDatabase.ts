@@ -12,6 +12,8 @@ export class UserDatabase extends Database {
             `)
         } catch (error) {
             throw new Error(error.sqlMessage)
+        } finally {
+            await Database.destroyConnection()
         }
     }
 
@@ -25,6 +27,8 @@ export class UserDatabase extends Database {
             return result[0][0]
         } catch (error) {
             throw new Error(error.sqlMessage)
+        } finally {
+            await Database.destroyConnection()
         }
     }
 
@@ -38,6 +42,8 @@ export class UserDatabase extends Database {
             return result[0][0]
         } catch (error) {
             throw new Error(error.sqlMessage)
+        } finally {
+            await Database.destroyConnection()
         }
     }
 }
