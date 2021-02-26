@@ -1,15 +1,16 @@
 import { MusicDatabase } from '../data/MusicDatabase'
-import { UserDatabase } from '../data/UserDatabase'
+import { GenreDatabase } from '../data/GenreDatabase'
 import { IdGenerator } from './services/IdGenerator'
 import { Authenticator } from './services/Authenticator'
-import { AddMusicInputDTO } from './model/Music'
+import { AddMusicInputDTO, Music } from './model/Music'
 import { UnauthorizedError } from './error/UnauthorizedError'
 import { ExpectationFailedError } from './error/ExpectationFailedError'
+import { Genre } from './model/Genre'
 
 export class MusicBusiness {
     constructor(
         private musicDatabase: MusicDatabase,
-        private userDatabase: UserDatabase,
+        private genreDatabase: GenreDatabase,
         private idGenerator: IdGenerator,
         private authenticator: Authenticator
     ) { }
@@ -28,11 +29,24 @@ export class MusicBusiness {
         const musicId = this.idGenerator.generateId()
 
         await this.musicDatabase.createMusic(
-            {
+            Music.toMusicModel({
                 ...music,
                 id: musicId,
                 userId: tokenData.id
-            }
+            })
         )
+
+        for (let genreName of music.genre) {
+            const genreId = this.idGenerator.generateId()
+
+            await this.genreDatabase.createGenre(
+                Genre.toGenreModel({
+                    id: genreId,
+                    name: genreName,
+                    musicId: musicId
+                })
+            )
+            
+        }
     }
 }

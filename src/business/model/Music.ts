@@ -9,18 +9,24 @@ export class Music {
         public readonly userId: string
     ) { }
 
-    // static stringToDate(input: string): Date {
-    //     const dateArray = input.split('/')
-
-    //     return new Date(input)
-    // }
+    static toMusicModel(music: any): Music {
+        return new Music(
+            music.id,
+            music.title,
+            music.author,
+            music.date,
+            music.file,
+            music.album,
+            music.userId
+        )
+    }
 }
 
 export interface AddMusicInputDTO {
     title: string,
     author: string,
-    date: Date,
+    date: string,
     file: string,
     album: string,
-    // genre: string[]
+    genre: string[]
 }
