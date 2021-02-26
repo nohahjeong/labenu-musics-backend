@@ -20,7 +20,7 @@ export class UserBusiness {
         }
 
         if (user.email.indexOf("@") === -1) {
-            throw new ExpectationFailedError('Address must have an "@"')
+            throw new ExpectationFailedError(`Address must have an "@"`)
         }
 
         if (user.password.length < 6) {
@@ -28,7 +28,7 @@ export class UserBusiness {
         }
 
         if (user.role !== UserRole.ADMIN && user.role !== UserRole.NORMAL) {
-            throw new ExpectationFailedError('User role must be "NORMAL" or "ADMIN"')
+            throw new ExpectationFailedError(`User role must be "NORMAL" or "ADMIN"`)
         }
 
         const userId = this.idGenerator.generateId()
