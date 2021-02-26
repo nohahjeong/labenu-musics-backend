@@ -37,16 +37,21 @@ export class MusicBusiness {
         )
 
         for (let genreName of music.genre) {
-            const genreId = this.idGenerator.generateId()
+            const genreFromDB = await this.genreDatabase.getGenreByName(genreName)
 
-            await this.genreDatabase.createGenre(
-                Genre.toGenreModel({
-                    id: genreId,
-                    name: genreName,
-                    musicId: musicId
-                })
-            )
-            
+            if (genreFromDB) {
+                await this.genreDatabase.createMusicGenreRelation(musicId, genreFromDB.id)
+            } else {
+                const genreId = this.idGenerator.generateId()
+
+                await this.genreDatabase.createGenre(
+                    Genre.toGenreModel({
+                        id: genreId,
+                        name: genreName,
+                        musicId: musicId
+                    })
+                )
+            }
         }
     }
 }
