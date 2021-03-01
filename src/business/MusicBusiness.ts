@@ -22,7 +22,7 @@ export class MusicBusiness {
             throw new UnauthorizedError('Please login first')
         }
 
-        if (!music.title || !music.author || !music.date || !music.file || !music.album) {
+        if (!music.title || !music.author || !music.date || !music.file || !music.album || !music.genre) {
             throw new ExpectationFailedError('Please fill in all the fields')
         }
 

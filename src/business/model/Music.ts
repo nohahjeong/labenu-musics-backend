@@ -30,3 +30,13 @@ export interface AddMusicInputDTO {
     album: string,
     genre: string[]
 }
+
+export interface MusicOutputDTO {
+    id: string,
+    title: string,
+    author: string,
+    date: Date,
+    file: string,
+    album: string,
+    genre: string[]
+}
