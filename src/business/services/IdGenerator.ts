@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 
 export class IdGenerator {
-    generateId(): string {
+    generate(): string {
         return v4()
     }
 }

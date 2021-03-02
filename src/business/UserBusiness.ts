@@ -31,8 +31,8 @@ export class UserBusiness {
             throw new ExpectationFailedError(`User role must be "NORMAL" or "ADMIN"`)
         }
 
-        const userId = this.idGenerator.generateId()
-        const hashPassword = await this.hashManager.generateHash(user.password)
+        const userId = this.idGenerator.generate()
+        const hashPassword = await this.hashManager.generate(user.password)
 
         await this.userDatabase.createUser(
             User.toUserModel({
@@ -42,7 +42,7 @@ export class UserBusiness {
             })
         )
 
-        const acessToken = this.authenticator.generateToken({
+        const acessToken = this.authenticator.generate({
             id: userId,
             role: user.role
         })
@@ -67,13 +67,13 @@ export class UserBusiness {
             throw new NotFoundError('Email or nickname not registered')
         }
 
-        const isPasswordCorrect = await this.hashManager.compareHash(user.password, userFromDB.password)
+        const isPasswordCorrect = await this.hashManager.compare(user.password, userFromDB.password)
 
         if (!isPasswordCorrect) {
             throw new ExpectationFailedError('Wrong password')
         }
 
-        const acessToken = this.authenticator.generateToken({
+        const acessToken = this.authenticator.generate({
             id: userFromDB.id,
             role: userFromDB.role
         })

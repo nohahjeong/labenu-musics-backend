@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs'
 
 export class HashManager {
-    public async generateHash(text: string): Promise<string> {
+    public async generate(text: string): Promise<string> {
         const rounds = 12
         const salt = await bcrypt.genSalt(rounds)
         const result = await bcrypt.hash(text, salt)
@@ -9,7 +9,7 @@ export class HashManager {
         return result
     }
 
-    public async compareHash(text: string, hash: string): Promise<boolean> {
+    public async compare(text: string, hash: string): Promise<boolean> {
         return await bcrypt.compare(text, hash)
     }
 }

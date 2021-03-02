@@ -17,7 +17,7 @@ export class MusicBusiness {
     ) { }
 
     async addMusic(music: AddMusicInputDTO, token: string) {
-        const tokenData = this.authenticator.getTokenData(token)
+        const tokenData = this.authenticator.getData(token)
 
         if (!tokenData) {
             throw new UnauthorizedError('Please login first')
@@ -27,7 +27,7 @@ export class MusicBusiness {
             throw new ExpectationFailedError('Please fill in all the fields')
         }
 
-        const musicId = this.idGenerator.generateId()
+        const musicId = this.idGenerator.generate()
 
         await this.musicDatabase.createMusic(
             Music.toMusicModel({
@@ -43,7 +43,7 @@ export class MusicBusiness {
             if (genreFromDB) {
                 await this.genreDatabase.createMusicGenreRelation(musicId, genreFromDB.id)
             } else {
-                const genreId = this.idGenerator.generateId()
+                const genreId = this.idGenerator.generate()
 
                 await this.genreDatabase.createGenre(
                     Genre.toGenreModel({
@@ -57,8 +57,7 @@ export class MusicBusiness {
     }
 
     async getUserMusics(token: string) {
-        console.log('---------business---------')
-        const tokenData = this.authenticator.getTokenData(token)
+        const tokenData = this.authenticator.getData(token)
 
         const userMusics = await this.musicDatabase.selectMusicsByUserId(tokenData.id)
 
