@@ -6,6 +6,7 @@ import { AddMusicInputDTO, Music } from './model/Music'
 import { UnauthorizedError } from './error/UnauthorizedError'
 import { ExpectationFailedError } from './error/ExpectationFailedError'
 import { Genre } from './model/Genre'
+import { NotFoundError } from './error/NotFoundError'
 
 export class MusicBusiness {
     constructor(
@@ -53,5 +54,24 @@ export class MusicBusiness {
                 )
             }
         }
+    }
+
+    async getUserMusics(token: string) {
+        console.log('---------business---------')
+        const tokenData = this.authenticator.getTokenData(token)
+
+        const userMusics = await this.musicDatabase.selectMusicsByUserId(tokenData.id)
+
+        if (!userMusics) {
+            throw new NotFoundError('User do not have musics')
+        }
+
+        const result = []
+        for (let music of userMusics) {
+            const genres = await this.genreDatabase.getGenresByMusicId(music.id)
+            result.push(music, {genres})
+        }
+
+        return result
     }
 }
