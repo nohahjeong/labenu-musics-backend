@@ -27,6 +27,10 @@ export class UserBusiness {
             throw new ExpectationFailedError('Password must have at least 6 characters')
         }
 
+        if (!user.role) {
+            user.role = UserRole.NORMAL
+        }
+
         if (user.role !== UserRole.ADMIN && user.role !== UserRole.NORMAL) {
             throw new ExpectationFailedError(`User role must be "NORMAL" or "ADMIN"`)
         }
