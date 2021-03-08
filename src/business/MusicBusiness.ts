@@ -68,7 +68,10 @@ export class MusicBusiness {
         const result = []
         for (let music of userMusics) {
             const genres = await this.genreDatabase.getGenresByMusicId(music.id)
-            result.push(music, {genres})
+            result.push({
+                ...music,
+                genres: genres
+            })
         }
 
         return result
